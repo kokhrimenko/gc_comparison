@@ -1,0 +1,11 @@
+version: '2'
+services:
+  g1_gc_web:
+    image: g1_gc_web
+    ports:
+      - 8080:8080
+
+  zgc_gc_web:
+    image: zgc_gc_web
+    ports:
+      - 9090:8080
