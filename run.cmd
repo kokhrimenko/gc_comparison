@@ -9,6 +9,9 @@ docker build -t zgc_gc_web -f src/main/resources/docker/zgc_gc/Dockerfile .
 docker run -p 9090:8080 --name zgc_gc_web --rm zgc_gc_web
 
 
+docker build -t g1_tester -f src/main/resources/docker/shell_g1/Dockerfile .
+
+docker run --name g1_tester --rm g1_tester
 
 # to stop
 docker stop g1_gc_web
