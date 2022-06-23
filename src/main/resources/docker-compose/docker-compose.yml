@@ -4,8 +4,10 @@ services:
     image: g1_gc_web
     ports:
       - 8080:8080
+      - 8500:5000
 
   zgc_gc_web:
     image: zgc_gc_web
     ports:
       - 9090:8080
+      - 9500:5000
