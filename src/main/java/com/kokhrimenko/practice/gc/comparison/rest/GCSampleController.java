@@ -2,6 +2,7 @@ package com.kokhrimenko.practice.gc.comparison.rest;
 
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GCSampleController {
 
 	private static final List<UUID> oldGenObjectsToOccupy = new ArrayList<>();
+	private static final List<SoftReference<UUID>> softRefOldGenObjectsToOccupy = new ArrayList<>();
 	
 	@GetMapping("/get-version")
 	public String doGetAction() {
@@ -47,6 +49,14 @@ public class GCSampleController {
 	public boolean generate() {
 		for (int i = 0; i < 1_000_000; i++) {
 			oldGenObjectsToOccupy.add(UUID.randomUUID());
+		}
+		return true;
+	}
+
+	@PostMapping("/soft-ref-generate")
+	public boolean generatesoftRef() {
+		for (int i = 0; i < 1_000_000; i++) {
+			softRefOldGenObjectsToOccupy.add(new SoftReference<>(UUID.randomUUID()));
 		}
 		return true;
 	}

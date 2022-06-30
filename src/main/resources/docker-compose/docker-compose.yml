@@ -2,12 +2,24 @@ version: '2'
 services:
   g1_gc_web:
     image: g1_gc_web
+    container_name: g1-gc-web
     ports:
       - 8080:8080
-      - 8500:5000
+      - 8500:8500
+  g1_tester:
+    image: g1_tester
+    container_name: g1-tester
+    depends_on:
+      - g1_gc_web
 
   zgc_gc_web:
     image: zgc_gc_web
+    container_name: zgc-gc-web
     ports:
       - 9090:8080
-      - 9500:5000
+      - 9500:9500
+  zgc_tester:
+    image: zgc_tester
+    container_name: zgc-tester
+    depends_on:
+      - zgc_gc_web
