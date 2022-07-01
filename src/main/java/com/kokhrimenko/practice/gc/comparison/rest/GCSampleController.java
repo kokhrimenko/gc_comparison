@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GCSampleController {
 
 	private static final List<UUID> oldGenObjectsToOccupy = new ArrayList<>();
-	private static final List<SoftReference<UUID>> softRefOldGenObjectsToOccupy = new ArrayList<>();
+	private static SoftReference<List<UUID>> softRefOldGenObjectsToOccupy = new SoftReference<>(new ArrayList<>());
 	
 	@GetMapping("/get-version")
 	public String doGetAction() {
@@ -46,18 +46,23 @@ public class GCSampleController {
 	}
 
 	@PostMapping("/generate")
-	public boolean generate() {
+	public String generate() {
 		for (int i = 0; i < 1_000_000; i++) {
 			oldGenObjectsToOccupy.add(UUID.randomUUID());
 		}
-		return true;
+		return String.format("Storage already has: %d elements", oldGenObjectsToOccupy.size());
 	}
 
 	@PostMapping("/soft-ref-generate")
-	public boolean generatesoftRef() {
-		for (int i = 0; i < 1_000_000; i++) {
-			softRefOldGenObjectsToOccupy.add(new SoftReference<>(UUID.randomUUID()));
+	public String generatesoftRef() {
+		List<UUID> cacheStorage = softRefOldGenObjectsToOccupy.get();
+		if (cacheStorage == null) {
+			cacheStorage = new ArrayList<>();
 		}
-		return true;
+		for (int i = 0; i < 1_000_000; i++) {
+			cacheStorage.add(UUID.randomUUID());
+		}
+		softRefOldGenObjectsToOccupy = new SoftReference<>(cacheStorage);
+		return String.format("Storage already has: %d elements", cacheStorage.size());
 	}
 }
