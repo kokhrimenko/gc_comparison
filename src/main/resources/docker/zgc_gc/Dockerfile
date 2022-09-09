@@ -1,4 +1,4 @@
-FROM openjdk:18-alpine
+FROM openjdk:18.0.2
 
 COPY target/gc.comparison-0.0.1-SNAPSHOT.jar app.jar
 
